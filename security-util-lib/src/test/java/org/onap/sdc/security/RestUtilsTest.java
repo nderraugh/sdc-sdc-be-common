@@ -33,7 +33,7 @@ public class RestUtilsTest {
     @Test
     public void addBasicAuthHeaderTest() {
         Properties headers = new Properties();
-        String encryptedPassword = SecurityUtil.INSTANCE.encrypt("password").left().value();
+        String encryptedPassword = SecurityUtil.INSTANCE.encrypt_gcm("password");
         RestUtils.addBasicAuthHeader(headers, "userName",encryptedPassword);
         String authHeader = headers.getProperty(HttpHeaders.AUTHORIZATION);
         assertNotNull(authHeader);
@@ -43,7 +43,7 @@ public class RestUtilsTest {
     @Test
     public void decryptPasswordSuccessTest() {
         String decryptedPassword = "password";
-        String encryptedPassword = SecurityUtil.INSTANCE.encrypt(decryptedPassword).left().value();
+        String encryptedPassword = SecurityUtil.INSTANCE.encrypt_gcm(decryptedPassword);
         String resultPassword = RestUtils.decryptPassword(encryptedPassword);
         assertEquals(decryptedPassword, resultPassword);
     }

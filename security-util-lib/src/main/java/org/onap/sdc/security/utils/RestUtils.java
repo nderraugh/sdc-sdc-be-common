@@ -49,14 +49,8 @@ public class RestUtils {
     @VisibleForTesting
     public static String decryptPassword(String password) {
         validate(password);
-        Either<String, String> passkey = SecurityUtil.INSTANCE.decrypt(password);
-        if(passkey.isLeft()) {
-            return passkey.left().value();
-        }
-        else {
-            throw new IllegalArgumentException(passkey.right().value());
-        }
-
+        String passkey = SecurityUtil.INSTANCE.decrypt_gcm(password.getBytes());
+        return passkey;
     }
 
     private static void validate(String str) {
