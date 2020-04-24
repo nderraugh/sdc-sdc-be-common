@@ -22,6 +22,8 @@ package org.onap.sdc.security;
 
 import org.junit.Test;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 import java.util.Base64;
 
 import static org.junit.Assert.assertEquals;
@@ -30,13 +32,13 @@ import static org.junit.Assert.assertNotEquals;
 public class SecurityUtilTest {
 
     @Test
-    public void encryptDecryptAES128() {
+    public void encryptDecryptAES128_gcm() {
         String data = "decrypt SUCCESS!!";
-        String encrypted = SecurityUtil.INSTANCE.encrypt(data).left().value();
+        String encrypted = SecurityUtil.INSTANCE.encrypt_gcm(data);
         assertNotEquals( data, encrypted );
         byte[] decryptMsg = Base64.getDecoder().decode(encrypted);
-        assertEquals( SecurityUtil.INSTANCE.decrypt( decryptMsg , false ).left().value() ,data );
-        assertEquals( SecurityUtil.INSTANCE.decrypt( encrypted.getBytes() , true ).left().value() ,data );
+        assertEquals( SecurityUtil.INSTANCE.decrypt_gcm( decryptMsg), data);
+        assertEquals( SecurityUtil.INSTANCE.decrypt_gcm( encrypted.getBytes()), data );
     }
 
     @Test
